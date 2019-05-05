@@ -1,7 +1,7 @@
 let canvas = document.getElementById('ttt'),
     ctx = canvas.getContext('2d'),
     msg = document.getElementById('message'),
-    cellSize = 100,
+    cellSize = 150, //Denna ändrar helt enkelt storleken på allt.
     
     /* Map skapar koordinater */
     map = [
@@ -53,10 +53,18 @@ canvas.addEventListener('click', function (e) {
     play(getCellByCoords(mouse.x, mouse.y));
 })
 
+function displayTurn() {
+    let turn = ((currentPlayer == X)? 'X': 'O')
+    msg.textContent = turn + '\'s tur.';
+}
+
 function play(cell) {
+    //Om gameOver; avsluta spelet (kan ej fylla i ytterligare rutor)
+    if(gameOver) return; 
+    
     //Testar så att inte map i index [cell] är tomt
     if (map[cell] != BLANK) {
-        msg.textContent = "Position taken.";
+        msg.textContent = 'Position upptagen.';
         return;
     }
     
@@ -67,12 +75,20 @@ function play(cell) {
     if (winCheck !=0) {
         //En vinst!
         gameOver = true;
-        let winner = ((currentPlayer == X)? 'X': 'O') + " wins!";
-        console.log(winner);
+        let winner = ((currentPlayer == X)? 'X': 'O');
+        msg.textContent = winner + ' vann!';
+        return;
         
+    } else if(map.indexOf(BLANK) == -1) {
+        //Om lika och ingen har vunnit.
+        gameOver = true;
+        msg.textContent = 'Lika!'
+        return;
     }
     
     currentPlayer = currentPlayer * -1
+    
+    displayTurn();
 }
 
 function checkWin(player) {
@@ -99,25 +115,30 @@ function draw () {
     drawBoard();
     fillBoard();
 
+//Rita 3x3 rutnät.
     function drawBoard () {
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 10;
-
+        ctx.lineWidth = 5; //Denna ändrar simpelt tjockleken på alla linjer. 
+        
+        //Vertikal linje 1
         ctx.beginPath();
         ctx.moveTo(cellSize, 0);
         ctx.lineTo(cellSize, canvas.height);
         ctx.stroke();
-
+        
+        //Vertikal linje 2
         ctx.beginPath();
         ctx.moveTo(cellSize * 2, 0);
         ctx.lineTo(cellSize * 2, canvas.height);
         ctx.stroke();
 
+        //Horisontell linje 1
         ctx.beginPath();
         ctx.moveTo(0, cellSize);
         ctx.lineTo(canvas.width, cellSize);
         ctx.stroke();
 
+        //Horisontell linje 2
         ctx.beginPath();
         ctx.moveTo(0, cellSize * 2);
         ctx.lineTo(canvas.width, cellSize * 2);
@@ -126,14 +147,14 @@ function draw () {
 
     function fillBoard () {
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 12; //Denna kan simpelt ändra tjockleken på X och O.
         for (let i = 0; i < map.length; i++) {
             let coords = getCellCoords(i); //Funktion skriven nedan. 
             
             ctx.save();
             
             ctx.translate(coords.x + cellSize / 2, coords.y + cellSize / 2);
-            if (map[i] == X) { ////Om index i map är lika med X; Rita X. 
+            if (map[i] == X) { //Om index i map är lika med X; Rita X. 
                 drawX();
             } else if (map[i] == O) { //Om index i map är lika med O; Rita O. 
                 drawO();
@@ -145,17 +166,21 @@ function draw () {
     //Funktion ritar ett X. Funktionen kommer användas när användaren trycker på en tom ruta, då ska rutan fyllas med denna.
     function drawX () {
         ctx.beginPath(); //Påbörjar ritningen
-        ctx.moveTo(-cellSize / 3, -cellSize / 3);
-        ctx.lineTo(cellSize / 3, cellSize / 3);
-        ctx.moveTo(cellSize / 3, -cellSize / 3);
-        ctx.lineTo(-cellSize / 3, cellSize / 3);
+        
+        let n = 3.2 //Ändra storleken på X:et. Kom ihåg att även ändra på drawO ifall ändrat.
+        
+        ctx.lineCap = "round"; //Gör x:en "runda" (d.v.s rounded edges.) 
+        ctx.moveTo(-cellSize / n, -cellSize / n); //upper left
+        ctx.lineTo(cellSize / n, cellSize / n); //lower right
+        ctx.moveTo(cellSize / n, -cellSize / n); //upper right
+        ctx.lineTo(-cellSize / n, cellSize / n); //lower left
         ctx.stroke();
     }
     
     //Funktion ritar ett X. Funktionen kommer användas när användaren trycker på en tom ruta, då ska rutan fyllas med denna.
     function drawO () {
         ctx.beginPath(); //Påbörjar ritningen
-        ctx.arc(0, 0, cellSize / 3, 0, Math.PI * 2); //Denna rad används för att konstruera själva cirkeln. Math.PI är pi.
+        ctx.arc(0, 0, cellSize / 3.2, 0, Math.PI * 2); //Denna rad används för att konstruera själva cirkeln. Math.PI är pi.
         ctx.stroke();
     }
 

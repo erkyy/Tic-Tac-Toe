@@ -5,22 +5,47 @@
         <title>Eriks Tic Tac Toe</title>
         <style>
             body {
-                background-color: #333;
+                background-color: #111111;
                 color: white;
+                
+                /* Font attribut*/
+                font-family: "CF";
+                font-size: 50px;
+                letter-spacing: .5px;
             }
-            div {
-                margin-top: 100px; /* Denna div skapar 100 tomma pixlar, för att "flytta ner" canvas*/
+            
+            titles {
+                font-size: 30px;
+                color: red;
             }
-        
+            
+            .gap-20 {
+                width: 100%;
+                height: 20px;
+            }
+            
+            /* Importerar custom font. */
+            @font-face {
+                font-family: "CF";
+                src: url("fonts/SF Slapstick Comic Shaded.ttf");
+}
+            
         </style>
+        
     </head>
+    
     <body>
-        <div> </div> <!-- Div implementeras enligt style, och "flyttar ner" canvas-->
-        <!-- Canvas start implementation -->
+        
+        <div class="gap-20"></div> <!-- Skapar 20px tomrum. -->
+        
         <center>
-        <canvas id="ttt"> </canvas>
+            
+            <p id="message"> Välkommen till Eriks tic tac toe! </p>
+            <canvas id="ttt"> </canvas>
+            
         </center>
-        <!-- Canvas end implementation -->
+
         <script src="ttt.js"></script>
+        
     </body>
 </html>
