@@ -14,21 +14,78 @@
                 letter-spacing: .5px;
             }
             
-            titles {
-                font-size: 30px;
-                color: red;
-            }
-            
             .gap-20 {
                 width: 100%;
                 height: 20px;
+            }
+            .gap-40 {
+                width: 100%;
+                height: 40px;
+            }
+            
+            .btn {
+                font-family: "CF";
+                font-size: 50px;
+                letter-spacing: .5px;
+                border-radius: 40px;
+                width: 550px;
+            }
+            
+            .xTitle {
+                position: absolute;
+                top: 140px;
+                left: 600px;
+                width: 20px;
+                height: 100px;
+            }
+            
+            .xCount {
+                position: absolute;
+                top: 200px;
+                left: 600px;
+                width: 20px;
+                height: 100px;
+            }
+            
+            .oTitle {
+                position: absolute;
+                top: 140px;
+                right: 600px;
+                width: 20px;
+                height: 100px;
+            }
+            
+            
+            
+            .oCount {
+                position: absolute;
+                top: 200px;
+                right: 600px;
+                width: 20px;
+                height: 100px;
+            }
+            
+            .draw {
+                position: absolute;
+                top: 400px;
+                left: 380px;
+                width: 20px;
+                height: 100px;
+            }
+            
+            .drawCount {
+                position: absolute;
+                top: 460px;
+                left: 600px;
+                width: 20px;
+                height: 100px;
             }
             
             /* Importerar custom font. */
             @font-face {
                 font-family: "CF";
                 src: url("fonts/SF Slapstick Comic Shaded.ttf");
-}
+            }
             
         </style>
         
@@ -38,13 +95,22 @@
         
         <div class="gap-20"></div> <!-- Skapar 20px tomrum. -->
         
+        <p class="xTitle">X:</p>
+        <p class="xCount" id="xCnt">0 </p>
+        <p class="oTitle">O:</p>
+        <p class="oCount" id="oCnt">0</p>
+        <p class="draw"> oavgjort: </p> 
+        <p class="drawCount" id="drawCnt">0</p>
         <center>
             
-            <p id="message"> Välkommen till Eriks tic tac toe! </p>
+            <p id="message"> Välkommen! </p>
+            
             <canvas id="ttt"> </canvas>
+            <div class="gap-40"></div> <!-- Skapar 20px tomrum. -->
+            <button class="btn" onclick="restartGame()">Starta om spelet</button>
             
         </center>
-
+        
         <script src="ttt.js"></script>
         
     </body>

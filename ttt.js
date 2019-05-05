@@ -1,7 +1,13 @@
 let canvas = document.getElementById('ttt'),
     ctx = canvas.getContext('2d'),
+    
     msg = document.getElementById('message'),
-    cellSize = 150, //Denna ändrar helt enkelt storleken på allt.
+    btn = document.getElementById('rematch'),
+    xCt = document.getElementById('xCnt'),
+    oCt = document.getElementById('oCnt'),
+    drawCt = document.getElementById('drawCnt'),
+    
+    cellSize = 160, //Denna ändrar helt enkelt storleken på allt.
     
     /* Map skapar koordinater */
     map = [
@@ -49,13 +55,16 @@ canvas.addEventListener('mousemove', function (e) {
     getCellByCoords(x, y);
 });
 
+//Användaren klickar! play() dras igång
 canvas.addEventListener('click', function (e) {
     play(getCellByCoords(mouse.x, mouse.y));
 })
 
 function displayTurn() {
-    let turn = ((currentPlayer == X)? 'X': 'O')
-    msg.textContent = turn + '\'s tur.';
+    var turn = ((currentPlayer == X)? 'X': 'O')
+    
+    //msg.textContent = turn + tur;
+    msg.textContent = turn + '\'s tur.'
 }
 
 function play(cell) {
@@ -73,16 +82,30 @@ function play(cell) {
     let winCheck = checkWin(currentPlayer);
     
     if (winCheck !=0) {
+        
         //En vinst!
         gameOver = true;
         let winner = ((currentPlayer == X)? 'X': 'O');
         msg.textContent = winner + ' vann!';
+        
+        if(winner == ('X')) {
+            var currentWins = parseInt(xCt.textContent, 10);
+            var winsNow = currentWins + 1;
+            xCt.textContent = '' + winsNow;
+        } else {
+            var currentWins = parseInt(oCt.textContent, 10);
+            var winsNow = currentWins + 1;
+            oCt.textContent = '' + winsNow;
+        }
         return;
         
     } else if(map.indexOf(BLANK) == -1) {
         //Om lika och ingen har vunnit.
         gameOver = true;
         msg.textContent = 'Lika!'
+        var currentWins = parseInt(drawCt.textContent, 10);
+            var winsNow = currentWins + 1;
+            drawCt.textContent = '' + winsNow;
         return;
     }
     
@@ -188,7 +211,7 @@ function draw () {
 }
 
 function getCellCoords (cell) {
-    //cellSize = 100 som definierat tidigare
+    //cellSize som definierat tidigare
     let x = (cell % 3) * cellSize,
         y = Math.floor(cell / 3) * cellSize; //Avrundar  
     
@@ -204,4 +227,16 @@ function getCellByCoords(x, y) {
     //Denna return funktion returnerar koordinaterna: 0, 1, 2 för toprow, 3,4,5 midrow, 6,7,8 toprow.
     return (Math.floor(x / cellSize) % 3) + Math.floor(y / cellSize) * 3;
 }
+
+function restartGame() {
+    msg.textContent = "Lycka till!";
+    currentPlayer = 1;
+    map = [
+        0, 0, 0, //rad 1
+        0, 0, 0, //rad 2
+        0, 0, 0, //rad 3
+    ]
+    gameOver = false;
+}
+
 draw(); //Tillkallar funktionen.
