@@ -55,7 +55,7 @@ canvas.addEventListener('mousemove', function (e) {
     getCellByCoords(x, y);
 });
 
-//Användaren klickar! play() dras igång
+//Användaren klickar. play() dras igång
 canvas.addEventListener('click', function (e) {
     play(getCellByCoords(mouse.x, mouse.y));
 })
@@ -73,7 +73,7 @@ function play(cell) {
     
     //Testar så att inte map i index [cell] är tomt
     if (map[cell] != BLANK) {
-        msg.textContent = 'Position upptagen.';
+        msg.textContent = 'Denna ruta är upptagen.';
         return;
     }
     
@@ -102,7 +102,7 @@ function play(cell) {
     } else if(map.indexOf(BLANK) == -1) {
         //Om lika och ingen har vunnit.
         gameOver = true;
-        msg.textContent = 'Lika!'
+        msg.textContent = 'Oavgjort!'
         var currentWins = parseInt(drawCt.textContent, 10);
             var winsNow = currentWins + 1;
             drawCt.textContent = '' + winsNow;
